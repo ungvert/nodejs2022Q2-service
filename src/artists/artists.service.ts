@@ -19,7 +19,7 @@ export class ArtistsService {
     return [...this.db.artists.values()];
   }
 
-  findOne(id: string) {
+  findOne(id: string, notFoundStatus: HttpStatus = HttpStatus.NOT_FOUND) {
     if (!isUUID(id)) {
       throw new HttpException(
         'ArtistId is invalid (not uuid)',
@@ -30,7 +30,7 @@ export class ArtistsService {
     if (!artist) {
       throw new HttpException(
         `Artist with id ${id} doesn't exist`,
-        HttpStatus.NOT_FOUND,
+        notFoundStatus,
       );
     }
     return artist;

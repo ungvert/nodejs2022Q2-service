@@ -19,7 +19,7 @@ export class AlbumsService {
     return [...this.db.albums.values()];
   }
 
-  findOne(id: string) {
+  findOne(id: string, notFoundStatus: HttpStatus = HttpStatus.NOT_FOUND) {
     if (!isUUID(id)) {
       throw new HttpException(
         'AlbumId is invalid (not uuid)',
@@ -30,7 +30,7 @@ export class AlbumsService {
     if (!album) {
       throw new HttpException(
         `Album with id ${id} doesn't exist`,
-        HttpStatus.NOT_FOUND,
+        notFoundStatus,
       );
     }
     return album;
