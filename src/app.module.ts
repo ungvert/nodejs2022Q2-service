@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ArtistsModule } from './artists/artists.module.js';
 import { InMemoryDbModule } from './in-memory-db/in-memory.module.js';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [InMemoryDbModule, UsersModule],
+  imports: [InMemoryDbModule, UsersModule, ArtistsModule],
 })
 export class AppModule {}
