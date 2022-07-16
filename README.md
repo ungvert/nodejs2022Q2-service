@@ -1,5 +1,6 @@
 # Home Library Service
 
+[Assignment, part 1](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
