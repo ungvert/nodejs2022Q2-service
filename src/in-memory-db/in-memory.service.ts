@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Album } from 'src/albums/entities/album.entity.js';
 import { Artist } from 'src/artists/entities/artist.entity.js';
 import { User } from '../users/entities/user.entity.js';
 
@@ -6,4 +7,5 @@ import { User } from '../users/entities/user.entity.js';
 export class InMemoryDbService {
   users: Map<User['id'], User> = new Map([]);
   artists: Map<Artist['id'], Artist> = new Map([]);
+  albums: Map<Album['id'], Album> = new Map([]);
 }
