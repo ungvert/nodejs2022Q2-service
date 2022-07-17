@@ -5,8 +5,8 @@ import { readFile } from 'fs/promises';
 import { dirname, join } from 'path';
 import { parse } from 'yaml';
 import { AppModule } from './app.module';
-
-const port = 4000;
+import 'dotenv/config';
+const port = +process.env.PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
