@@ -11,14 +11,14 @@ export class Track {
   constructor(trackDto: CreateTrackDto) {
     this.id = v4();
     this.name = trackDto.name;
-    this.albumId = trackDto.albumId;
-    this.artistId = trackDto.artistId;
+    this.albumId = trackDto.albumId || null;
+    this.artistId = trackDto.artistId || null;
     this.duration = trackDto.duration;
   }
   update(trackDto: UpdateTrackDto) {
     this.name = trackDto.name;
-    this.albumId = trackDto.albumId;
-    this.artistId = trackDto.artistId;
+    this.albumId = trackDto.albumId || null;
+    this.artistId = trackDto.artistId || null;
     this.duration = trackDto.duration;
   }
 }

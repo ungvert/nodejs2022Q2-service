@@ -1,5 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { isUUID } from 'class-validator';
+import { FavouritesService } from '../favourites/favourites.service.js';
 import { InMemoryDbService } from '../in-memory-db/in-memory.service.js';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
@@ -7,7 +14,11 @@ import { Track } from './entities/track.entity.js';
 
 @Injectable()
 export class TracksService {
-  constructor(private readonly db: InMemoryDbService) {}
+  constructor(
+    private readonly db: InMemoryDbService,
+    @Inject(forwardRef(() => FavouritesService))
+    private favouritesService: FavouritesService,
+  ) {}
 
   create(createTrackDto: CreateTrackDto) {
     const track = new Track(createTrackDto);
@@ -45,6 +56,6 @@ export class TracksService {
   remove(id: string) {
     const track = this.findOne(id);
     this.db.tracks.delete(track.id);
-    return;
+    this.favouritesService.removeTrack(track.id);
   }
 }

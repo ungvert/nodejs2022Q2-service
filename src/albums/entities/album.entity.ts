@@ -11,11 +11,11 @@ export class Album {
     this.id = v4();
     this.name = albumDto.name;
     this.year = albumDto.year;
-    this.artistId = albumDto.artistId;
+    this.artistId = albumDto.artistId || null;
   }
   update(albumDto: UpdateAlbumDto) {
     this.name = albumDto.name;
     this.year = albumDto.year;
-    this.artistId = albumDto.artistId;
+    this.artistId = albumDto.artistId || null;
   }
 }

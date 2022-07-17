@@ -1,13 +1,27 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { isUUID } from 'class-validator';
+import { TracksService } from '../tracks/tracks.service.js';
 import { InMemoryDbService } from '../in-memory-db/in-memory.service.js';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity.js';
+import { FavouritesService } from '../favourites/favourites.service.js';
 
 @Injectable()
 export class AlbumsService {
-  constructor(private readonly db: InMemoryDbService) {}
+  constructor(
+    private readonly db: InMemoryDbService,
+    @Inject(forwardRef(() => FavouritesService))
+    private favouritesService: FavouritesService,
+    @Inject(forwardRef(() => TracksService))
+    private tracksService: TracksService,
+  ) {}
 
   create(createAlbumDto: CreateAlbumDto) {
     const album = new Album(createAlbumDto);
@@ -45,6 +59,12 @@ export class AlbumsService {
   remove(id: string) {
     const album = this.findOne(id);
     this.db.albums.delete(album.id);
-    return;
+
+    this.favouritesService.removeAlbum(album.id);
+    for (const [trackId, track] of this.db.tracks) {
+      if (track.albumId === id) {
+        this.tracksService.update(trackId, { albumId: null });
+      }
+    }
   }
 }
