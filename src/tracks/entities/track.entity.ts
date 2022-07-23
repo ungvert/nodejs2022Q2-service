@@ -1,24 +1,21 @@
-import { v4 } from 'uuid';
-import { CreateTrackDto } from '../dto/create-track.dto.js';
-import { UpdateTrackDto } from '../dto/update-track.dto.js';
+import { Album } from '../../albums/entities/album.entity.js';
+import { Artist } from '../../artists/entities/artist.entity.js';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class Track {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
   name: string;
-  artistId: string | null;
-  albumId: string | null;
+
+  @Column()
   duration: number;
-  constructor(trackDto: CreateTrackDto) {
-    this.id = v4();
-    this.name = trackDto.name;
-    this.albumId = trackDto.albumId || null;
-    this.artistId = trackDto.artistId || null;
-    this.duration = trackDto.duration;
-  }
-  update(trackDto: UpdateTrackDto) {
-    this.name = trackDto.name;
-    this.albumId = trackDto.albumId || null;
-    this.artistId = trackDto.artistId || null;
-    this.duration = trackDto.duration;
-  }
+
+  @ManyToOne(() => Artist, { nullable: true })
+  artistId: Artist['id'] | null;
+
+  @ManyToOne(() => Album, { nullable: true })
+  albumId: Album['id'] | null;
 }

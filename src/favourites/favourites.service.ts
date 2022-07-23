@@ -24,8 +24,8 @@ export class FavouritesService {
     };
   }
 
-  addTrack(id: string) {
-    const track = this.tracksService.findOne(
+  async addTrack(id: string) {
+    const track = await this.tracksService.findOne(
       id,
       HttpStatus.UNPROCESSABLE_ENTITY,
     );
