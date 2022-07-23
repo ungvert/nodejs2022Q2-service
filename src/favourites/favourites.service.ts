@@ -37,8 +37,8 @@ export class FavouritesService {
     return this.getAll();
   }
 
-  addArtist(id: string) {
-    const artist = this.artistsService.findOne(
+  async addArtist(id: string) {
+    const artist = await this.artistsService.findOne(
       id,
       HttpStatus.UNPROCESSABLE_ENTITY,
     );

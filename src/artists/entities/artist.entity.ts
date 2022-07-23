@@ -1,18 +1,13 @@
-import { v4 } from 'uuid';
-import { CreateArtistDto } from '../dto/create-artist.dto.js';
-import { UpdateArtistDto } from '../dto/update-artist.dto.js';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class Artist {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
   name: string;
+
+  @Column()
   grammy: boolean;
-  constructor(artistDto: CreateArtistDto) {
-    this.id = v4();
-    this.name = artistDto.name;
-    this.grammy = artistDto.grammy;
-  }
-  update(artistDto: UpdateArtistDto) {
-    this.name = artistDto.name;
-    this.grammy = artistDto.grammy;
-  }
 }
