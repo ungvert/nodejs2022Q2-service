@@ -29,9 +29,6 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    if (!isUUID(id)) {
-      throw new BadRequestException('UserId is invalid (not uuid)');
-    }
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
       throw new NotFoundException(`User with id ${id} doesn't exist`);
