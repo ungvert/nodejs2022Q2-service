@@ -16,6 +16,12 @@ REST api for home library service.
 git clone https://github.com/ungvert/nodejs2022Q2-service.git
 ```
 
+### Create and setup .env file
+
+```bash
+cp .env.example .env
+```
+
 ## Running application with docker
 
 ### Running application 

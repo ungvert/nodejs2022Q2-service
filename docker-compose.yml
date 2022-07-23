@@ -10,7 +10,7 @@ services:
     volumes:
       - ./src:/home/node/app/src
     ports:
-      - "4000:4000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     networks:
       - app_network
 
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./db/data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
     networks:
       - app_network
 
