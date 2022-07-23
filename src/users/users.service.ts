@@ -1,5 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
+import { Repository } from 'typeorm';
 import { InMemoryDbService } from '../in-memory-db/in-memory.service.js';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,47 +14,43 @@ import { User } from './entities/user.entity.js';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly db: InMemoryDbService) {}
+  constructor(
+    private readonly db: InMemoryDbService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {}
 
   create(createUserDto: CreateUserDto) {
-    const user = new User(createUserDto);
-    this.db.users.set(user.id, user);
-    return user;
+    const user = this.userRepository.create(createUserDto);
+    return this.userRepository.save(user);
   }
 
   findAll() {
-    return [...this.db.users.values()];
+    return this.userRepository.find();
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     if (!isUUID(id)) {
-      throw new HttpException(
-        'UserId is invalid (not uuid)',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('UserId is invalid (not uuid)');
     }
-    const user = this.db.users.get(id);
+    const user = await this.userRepository.findOneBy({ id });
     if (!user) {
-      throw new HttpException(
-        `User with id ${id} doesn't exist`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException(`User with id ${id} doesn't exist`);
     }
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    const user = this.findOne(id);
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+
     if (updateUserDto.oldPassword !== user.password) {
-      throw new HttpException(`Wrong old password`, HttpStatus.FORBIDDEN);
+      throw new ForbiddenException(`Wrong old password`);
     }
-    user.updatePassword(updateUserDto);
-    return user;
+    user.password = updateUserDto.newPassword;
+    return await this.userRepository.save(user);
   }
 
-  remove(id: string) {
-    const user = this.findOne(id);
-    this.db.users.delete(user.id);
-    return;
+  async remove(id: string) {
+    const user = await this.findOne(id);
+    return this.userRepository.remove(user);
   }
 }
