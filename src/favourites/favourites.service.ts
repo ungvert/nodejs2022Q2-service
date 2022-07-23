@@ -50,8 +50,8 @@ export class FavouritesService {
     return this.getAll();
   }
 
-  addAlbum(id: string) {
-    const album = this.albumsService.findOne(
+  async addAlbum(id: string) {
+    const album = await this.albumsService.findOne(
       id,
       HttpStatus.UNPROCESSABLE_ENTITY,
     );
