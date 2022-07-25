@@ -25,16 +25,19 @@ export class TracksService {
   ) {}
 
   create(createTrackDto: CreateTrackDto) {
-    const track = this.trackRepository.create(createTrackDto);
+    const track = this.trackRepository.create({ ...createTrackDto });
     return this.trackRepository.save(track);
   }
 
   findAll() {
-    return [...this.db.tracks.values()];
+    return this.trackRepository.find();
   }
 
   async findOne(id: string, notFoundStatus: HttpStatus = HttpStatus.NOT_FOUND) {
-    const track = await this.trackRepository.findOneBy({ id });
+    const track = await this.trackRepository.findOne({
+      where: { id },
+      loadRelationIds: true,
+    });
     if (!track) {
       throw new HttpException(
         `Track with id ${id} doesn't exist`,
