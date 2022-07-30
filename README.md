@@ -44,7 +44,7 @@ docker compose down
 npm run scan
 ```
 
-Image with backend pushed to Docker Hub: https://hub.docker.com/r/ungvert/nest-backend
+Image with backend service pushed to Docker Hub: https://hub.docker.com/r/ungvert/nest-backend
 
 ## Running application with local npm installation
 
