@@ -35,6 +35,8 @@ cp .env.example .env
 docker compose up
 ```
 
+Backend running in dev mode as default. You can change it by adding `command` in docker-compose.yml
+
 ### Stopping application 
 
 ```bash
@@ -46,6 +48,8 @@ docker compose down
 ```bash
 npm run scan
 ```
+
+Image with backend service pushed to Docker Hub: https://hub.docker.com/r/ungvert/nest-backend
 
 ## Running application with local npm installation
 
