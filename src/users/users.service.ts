@@ -1,13 +1,10 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { isUUID } from 'class-validator';
 import { Repository } from 'typeorm';
-import { InMemoryDbService } from '../in-memory-db/in-memory.service.js';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity.js';
@@ -15,7 +12,6 @@ import { User } from './entities/user.entity.js';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly db: InMemoryDbService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 

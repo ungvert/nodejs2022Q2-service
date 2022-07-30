@@ -1,15 +1,11 @@
 import {
-  forwardRef,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FavouritesService } from '../favourites/favourites.service.js';
-import { InMemoryDbService } from '../in-memory-db/in-memory.service.js';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity.js';
@@ -17,11 +13,8 @@ import { Track } from './entities/track.entity.js';
 @Injectable()
 export class TracksService {
   constructor(
-    private readonly db: InMemoryDbService,
     @InjectRepository(Track)
     private readonly trackRepository: Repository<Track>,
-    @Inject(forwardRef(() => FavouritesService))
-    private favouritesService: FavouritesService,
   ) {}
 
   create(createTrackDto: CreateTrackDto) {

@@ -1,30 +1,20 @@
 import {
-  forwardRef,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { TracksService } from '../tracks/tracks.service.js';
-import { InMemoryDbService } from '../in-memory-db/in-memory.service.js';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity.js';
-import { FavouritesService } from '../favourites/favourites.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumsService {
   constructor(
-    private readonly db: InMemoryDbService,
     @InjectRepository(Album)
     private readonly albumRepository: Repository<Album>,
-    @Inject(forwardRef(() => FavouritesService))
-    private favouritesService: FavouritesService,
-    @Inject(forwardRef(() => TracksService))
-    private tracksService: TracksService,
   ) {}
 
   create(createAlbumDto: CreateAlbumDto) {
@@ -58,12 +48,5 @@ export class AlbumsService {
   async remove(id: string) {
     const album = await this.findOne(id);
     return this.albumRepository.remove(album);
-
-    // this.favouritesService.removeAlbum(album.id);
-    // for (const [trackId, track] of this.db.tracks) {
-    //   if (track.albumId === id) {
-    //     this.tracksService.update(trackId, { albumId: null });
-    //   }
-    // }
   }
 }

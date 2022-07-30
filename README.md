@@ -35,13 +35,24 @@ cp .env.example .env
 
 ## Running application with docker
 
-### Running application 
+### Running application with db instance
 
 ```bash
 docker compose up
 ```
 
-Backend running in dev mode as default. You can change it by adding `command` in docker-compose.yml
+Backend running in dev mode as default. You can change it by adding `command` in docker-compose.yml, in backend section.
+
+Backend starts on port 4000 as default, can be changed in .env file.
+
+### Run migrations for creating db entities
+
+```bash
+npm run migration:run
+```
+
+After starting the backend and db and running migrations you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ### Stopping application 
 
@@ -57,23 +68,12 @@ npm run scan
 
 Image with backend service pushed to Docker Hub: https://hub.docker.com/r/ungvert/nest-backend
 
-## Running application without docker
 
-### Run migrations for creating db entities
-
-```bash
-npm run typeorm migration:run -- -d ./src/migrations-data-source.ts
-```
-
-### Running application
+### Running application locally
 
 ```bash
 npm start
 ```
-
-After starting the app on port (4000 as default, can be changed in .env file) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ### Testing
 

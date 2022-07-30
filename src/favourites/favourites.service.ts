@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AlbumsService } from './../albums/albums.service.js';
 import { ArtistsService } from './../artists/artists.service.js';
-import { InMemoryDbService } from './../in-memory-db/in-memory.service.js';
 import { TracksService } from './../tracks/tracks.service.js';
 import {
   AlbumFavorites,
@@ -20,7 +19,6 @@ import {
 @Injectable()
 export class FavouritesService {
   constructor(
-    private readonly db: InMemoryDbService,
     @InjectRepository(ArtistFavorites)
     private readonly artistFavoritesRepository: Repository<ArtistFavorites>,
     @InjectRepository(AlbumFavorites)
