@@ -2,7 +2,12 @@
 
 REST api for home library service.
 
-[Assignment, part 1](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
+[Assignment, part 1, REST Service: Basic](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
+
+[Assignment, part 2, Containerization, Docker](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/containerization/assignment.md)
+
+[Assignment, part 3, PostgreSQL & ORM](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/database-orm/assignment.md)
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -48,6 +53,12 @@ npm run scan
 
 ```bash
 npm install
+```
+
+### Run migrations for creating db entities
+
+```bash
+npm run typeorm migration:run -- -d ./src/migrations-data-source.ts
 ```
 
 ### Running application
