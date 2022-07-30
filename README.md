@@ -21,6 +21,12 @@ REST api for home library service.
 git clone https://github.com/ungvert/nodejs2022Q2-service.git
 ```
 
+## Installing NPM modules
+
+```bash
+npm ci
+```
+
 ### Create and setup .env file
 
 ```bash
@@ -51,13 +57,7 @@ npm run scan
 
 Image with backend service pushed to Docker Hub: https://hub.docker.com/r/ungvert/nest-backend
 
-## Running application with local npm installation
-
-### Installing NPM modules
-
-```bash
-npm install
-```
+## Running application without docker
 
 ### Run migrations for creating db entities
 
