@@ -1,5 +1,5 @@
-import { Album } from '../../albums/entities/album.entity.js';
-import { Artist } from '../../artists/entities/artist.entity.js';
+import { Album } from '../../albums/entities/album.entity';
+import { Artist } from '../../artists/entities/artist.entity';
 import {
   Column,
   Entity,

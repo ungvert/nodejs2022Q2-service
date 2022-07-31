@@ -7,14 +7,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AlbumsService } from './../albums/albums.service.js';
-import { ArtistsService } from './../artists/artists.service.js';
-import { TracksService } from './../tracks/tracks.service.js';
+import { AlbumsService } from './../albums/albums.service';
+import { ArtistsService } from './../artists/artists.service';
+import { TracksService } from '../tracks/tracks.service';
 import {
   AlbumFavorites,
   ArtistFavorites,
   TrackFavorites,
-} from './entities/favourites.entity.js';
+} from './entities/favourites.entity';
 
 @Injectable()
 export class FavouritesService {
