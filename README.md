@@ -1,12 +1,14 @@
 # Home Library Service
 
-REST api for home library service.
+REST api for home music library service.
 
 [Assignment, part 1, REST Service: Basic](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
 
 [Assignment, part 2, Containerization, Docker](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/containerization/assignment.md)
 
 [Assignment, part 3, PostgreSQL & ORM](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/database-orm/assignment.md)
+
+[Assignment, part 4, Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/authentication/assignment.md)
 
 ## Prerequisites
 
@@ -82,13 +84,13 @@ After application running open new terminal and enter:
 To run all tests without authorization
 
 ```bash
-npm run test
+npm run test:auth
 ```
 
 To run only one of all test suites
 
 ```bash
-npm run test -- <path to suite>
+npm run test:auth -- <path to suite>
 ```
 
 #### Auto-fix and format
