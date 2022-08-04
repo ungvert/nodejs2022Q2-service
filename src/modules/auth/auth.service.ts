@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtPayload } from 'jsonwebtoken';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 const saltRounds = +process.env.CRYPT_SALT || 10;
 const salt = genSaltSync(saltRounds);
@@ -51,10 +52,7 @@ export class AuthService {
     };
 
     return {
-      accessToken: this.jwtService.sign(jwtPayload, {
-        secret: jwtConstants.accessToken.secret,
-        expiresIn: jwtConstants.accessToken.expiresIn,
-      }),
+      accessToken: this.jwtService.sign(jwtPayload, jwtConstants.accessToken),
       refreshToken: await this.getRefreshToken(jwtPayload),
     };
   }
@@ -62,5 +60,28 @@ export class AuthService {
   async getRefreshToken(jwtPayload: JwtPayload) {
     const options = jwtConstants.refreshToken;
     return this.jwtService.sign(jwtPayload, options);
+  }
+
+  async regenerateTokens(refreshTokenDto: RefreshTokenDto): Promise<any> {
+    const isRefreshTokenValid = await this.jwtService.verify(
+      refreshTokenDto.refreshToken,
+      jwtConstants.refreshToken,
+    );
+    if (isRefreshTokenValid) {
+      const oldSignedPayload = this.jwtService.decode(
+        refreshTokenDto.refreshToken,
+      ) as JwtPayload;
+      const newUnsignedPayload = {
+        sub: oldSignedPayload.sub,
+        login: oldSignedPayload.login,
+      };
+      return {
+        accessToken: this.jwtService.sign(
+          newUnsignedPayload,
+          jwtConstants.accessToken,
+        ),
+        refreshToken: await this.getRefreshToken(newUnsignedPayload),
+      };
+    }
   }
 }
