@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { AllExceptionsFilter } from '../../common/filters/http-exception.filter';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Module({
@@ -8,6 +9,10 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
     },
   ],
 })
