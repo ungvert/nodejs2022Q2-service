@@ -27,33 +27,33 @@ export class LoggingService extends ConsoleLogger {
     super.setLogLevels(logLevels);
   }
 
-  printMessages(
-    messages: unknown[],
-    context?: string,
-    logLevel?: LogLevel,
-    writeStreamType?: 'stdout' | 'stderr',
-  ) {
-    const resolvePath = this.logFilePath;
-    messages.forEach((message) => {
-      const pidMessage = this.formatPid(process.pid);
-      const contextMessage = context ? `[${context}] ` : '';
-      const timestampDiff = '';
-      const formattedLogLevel = logLevel.toUpperCase().padStart(7, ' ');
-      const formattedMessage = this.formatMessage(
-        logLevel,
-        message,
-        pidMessage,
-        formattedLogLevel,
-        contextMessage,
-        timestampDiff,
-      );
+  // printMessages(
+  //   messages: unknown[],
+  //   context?: string,
+  //   logLevel?: LogLevel,
+  //   writeStreamType?: 'stdout' | 'stderr',
+  // ) {
+  //   const resolvePath = this.logFilePath;
+  //   messages.forEach((message) => {
+  //     const pidMessage = this.formatPid(process.pid);
+  //     const contextMessage = context ? `[${context}] ` : '';
+  //     const timestampDiff = '';
+  //     const formattedLogLevel = logLevel.toUpperCase().padStart(7, ' ');
+  //     const formattedMessage = this.formatMessage(
+  //       logLevel,
+  //       message,
+  //       pidMessage,
+  //       formattedLogLevel,
+  //       contextMessage,
+  //       timestampDiff,
+  //     );
 
-      appendFile(resolvePath, formattedMessage, (err) => {
-        if (err) throw err;
-      });
-      process[writeStreamType ?? 'stdout'].write(formattedMessage);
-    });
-  }
+  //     appendFile(resolvePath, formattedMessage, (err) => {
+  //       if (err) throw err;
+  //     });
+  //     process[writeStreamType ?? 'stdout'].write(formattedMessage);
+  //   });
+  // }
 
   fileSizeIsOk(pathToFile: string) {
     const stats = statSync(pathToFile, { throwIfNoEntry: false });
