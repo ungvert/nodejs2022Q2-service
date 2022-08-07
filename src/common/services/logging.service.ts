@@ -1,13 +1,14 @@
 import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
 import { dirname, join } from 'path';
-import { appendFile, mkdir } from 'fs';
+import { appendFile, mkdir, statSync } from 'fs';
 
 const logDirname = join(dirname(__dirname), 'logs');
 
 @Injectable()
 export class LoggingService extends ConsoleLogger {
   private readonly logFolder = logDirname;
-  // private readonly logFileMaxSize = process.env.LOG_MAX_FILE_SIZE || 1024;
+  private readonly logFileMaxSize =
+    (+process.env.LOG_MAX_FILE_SIZE_KB || 1) * 1024;
 
   private logFilePath: string | null = null;
   private errorLogFilePath: string | null = null;
@@ -26,7 +27,17 @@ export class LoggingService extends ConsoleLogger {
     super.setLogLevels(logLevels);
   }
 
+  fileSizeIsOk(pathToFile: string) {
+    const stats = statSync(pathToFile, { throwIfNoEntry: false });
+    if (!stats) return true;
+    return stats.size < this.logFileMaxSize;
+  }
+
   writeLogFile(message: any) {
+    if (!this.fileSizeIsOk(this.logFilePath)) {
+      const now = Date.now();
+      this.logFilePath = join(this.logFolder, `${now}.log`);
+    }
     appendFile(
       this.logFilePath,
       String(message),
@@ -35,6 +46,10 @@ export class LoggingService extends ConsoleLogger {
     );
   }
   writeErrorFile(message: any) {
+    if (!this.fileSizeIsOk(this.errorLogFilePath)) {
+      const now = Date.now();
+      this.errorLogFilePath = join(this.logFolder, `${now}.error.log`);
+    }
     appendFile(
       this.errorLogFilePath,
       String(message),
