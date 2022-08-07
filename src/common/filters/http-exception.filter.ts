@@ -1,21 +1,22 @@
 import { ArgumentsHost, Catch, HttpException } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
+import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { LoggingService } from '../services/logging.service';
 
 @Catch()
 export class AllExceptionsFilter<T> extends BaseExceptionFilter {
-  catch(exception: T, host: ArgumentsHost) {
-    const context = host.switchToHttp();
-    const responce = context.getResponse();
+  constructor(private readonly loggingService: LoggingService) {
+    super();
+  }
 
+  catch(exception: T, host: ArgumentsHost) {
     const isUnexpectedError = !(exception instanceof HttpException);
     if (isUnexpectedError) {
-      responce.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-        message: 'Internal Server Error',
-        timestamp: new Date().toISOString(),
-      });
+      // handled in interceptor
     } else {
+      this.loggingService.log(`Response status code: ${exception.getStatus()}`);
+      this.loggingService.error(exception);
       super.catch(exception, host);
     }
   }
