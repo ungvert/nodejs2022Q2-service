@@ -25,12 +25,6 @@ export class LoggingInterceptor implements NestInterceptor {
             `Response status code: ${response.statusCode}`,
           ),
         ),
-      )
-      .pipe(
-        catchError((err) => {
-          this.loggingService.error(`Unexpected ${err}`);
-          return throwError(() => new InternalServerErrorException());
-        }),
       );
   }
 }
