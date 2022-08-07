@@ -24,36 +24,15 @@ export class LoggingService extends ConsoleLogger {
 
     mkdir(logDirname, { recursive: true }, (err) => console.log(err));
 
-    super.setLogLevels(logLevels);
+    this.setLogLevels(logLevels);
   }
 
-  // printMessages(
-  //   messages: unknown[],
-  //   context?: string,
-  //   logLevel?: LogLevel,
-  //   writeStreamType?: 'stdout' | 'stderr',
-  // ) {
-  //   const resolvePath = this.logFilePath;
-  //   messages.forEach((message) => {
-  //     const pidMessage = this.formatPid(process.pid);
-  //     const contextMessage = context ? `[${context}] ` : '';
-  //     const timestampDiff = '';
-  //     const formattedLogLevel = logLevel.toUpperCase().padStart(7, ' ');
-  //     const formattedMessage = this.formatMessage(
-  //       logLevel,
-  //       message,
-  //       pidMessage,
-  //       formattedLogLevel,
-  //       contextMessage,
-  //       timestampDiff,
-  //     );
-
-  //     appendFile(resolvePath, formattedMessage, (err) => {
-  //       if (err) throw err;
-  //     });
-  //     process[writeStreamType ?? 'stdout'].write(formattedMessage);
-  //   });
-  // }
+  formatMessageForFile(message: unknown, logLevel?: LogLevel) {
+    const pidMessage = `[${process.pid}]`;
+    const timestampDiff = '';
+    const formattedLogLevel = logLevel.toUpperCase().padStart(7, ' ');
+    return `${pidMessage}${this.getTimestamp()} ${formattedLogLevel} ${message}${timestampDiff}\n`;
+  }
 
   fileSizeIsOk(pathToFile: string) {
     const stats = statSync(pathToFile, { throwIfNoEntry: false });
@@ -87,24 +66,39 @@ export class LoggingService extends ConsoleLogger {
   }
 
   log(message: any, ...optionalParams: [...any, string?]) {
+    if (!this.isLevelEnabled('log')) {
+      return;
+    }
     super.log(message, ...optionalParams);
-    this.writeLogFile(message);
+    this.writeLogFile(this.formatMessageForFile(message, 'log'));
   }
   error(message: any, ...optionalParams: [...any, string?]) {
+    if (!this.isLevelEnabled('error')) {
+      return;
+    }
     super.error(message, ...optionalParams);
-    this.writeErrorFile(message);
+    this.writeErrorFile(this.formatMessageForFile(message, 'error'));
   }
   warn(message: any, ...optionalParams: [...any, string?]) {
+    if (!this.isLevelEnabled('warn')) {
+      return;
+    }
     super.warn(message, ...optionalParams);
-    this.writeLogFile(message);
+    this.writeLogFile(this.formatMessageForFile(message, 'warn'));
   }
   debug(message: any, ...optionalParams: [...any, string?]) {
+    if (!this.isLevelEnabled('debug')) {
+      return;
+    }
     super.debug(message, ...optionalParams);
-    this.writeLogFile(message);
+    this.writeLogFile(this.formatMessageForFile(message, 'debug'));
   }
   verbose(message: any, ...optionalParams: [...any, string?]) {
+    if (!this.isLevelEnabled('verbose')) {
+      return;
+    }
     super.verbose(message, ...optionalParams);
-    this.writeLogFile(message);
+    this.writeLogFile(this.formatMessageForFile(message, 'verbose'));
   }
 
   logUncaughtAndUnhandledEvents() {
