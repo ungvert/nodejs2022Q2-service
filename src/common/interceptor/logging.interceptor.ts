@@ -17,14 +17,11 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const response = ctx.getResponse<Response>();
-    return next
-      .handle()
-      .pipe(
-        map(() =>
-          this.loggingService.log(
-            `Response status code: ${response.statusCode}`,
-          ),
-        ),
-      );
+    return next.handle().pipe(
+      map((data) => {
+        this.loggingService.log(`Response status code: ${response.statusCode}`);
+        return data;
+      }),
+    );
   }
 }

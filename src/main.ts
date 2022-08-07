@@ -6,10 +6,13 @@ import { dirname, join } from 'path';
 import { parse } from 'yaml';
 import { AppModule } from './modules/app.module';
 import 'dotenv/config';
+import { logLevels } from './common/services/logging.service';
 const port = +process.env.BACKEND_PORT || 4000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: logLevels,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

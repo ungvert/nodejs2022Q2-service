@@ -1,14 +1,13 @@
 import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
-import { FileHandle, open } from 'fs/promises';
 import { dirname, join } from 'path';
-import { appendFile, readdir, mkdir, createWriteStream } from 'fs';
+import { appendFile, mkdir } from 'fs';
 
 const logDirname = join(dirname(__dirname), 'logs');
 
 @Injectable()
 export class LoggingService extends ConsoleLogger {
   private readonly logFolder = logDirname;
-  private readonly logFileMaxSize = 1024;
+  // private readonly logFileMaxSize = process.env.LOG_MAX_FILE_SIZE || 1024;
 
   private logFilePath: string | null = null;
   private errorLogFilePath: string | null = null;
@@ -23,17 +22,24 @@ export class LoggingService extends ConsoleLogger {
     this.errorLogFilePath = join(this.logFolder, `${now}.error.log`);
 
     mkdir(logDirname, { recursive: true }, (err) => console.log(err));
-    // setTimeout(() => console.log('this.logFilePath', this.logFilePath), 1000);
+
+    super.setLogLevels(logLevels);
   }
 
   writeLogFile(message: any) {
-    appendFile(this.logFilePath, String(message), { flag: 'a' }, (err) =>
-      console.error(err),
+    appendFile(
+      this.logFilePath,
+      String(message),
+      { flag: 'a' },
+      (err) => err && console.error(err),
     );
   }
   writeErrorFile(message: any) {
-    appendFile(this.errorLogFilePath, String(message), { flag: 'a' }, (err) =>
-      console.error(err),
+    appendFile(
+      this.errorLogFilePath,
+      String(message),
+      { flag: 'a' },
+      (err) => err && console.error(err),
     );
   }
 
@@ -71,10 +77,16 @@ export class LoggingService extends ConsoleLogger {
      */
     // setTimeout(
     //   () => Promise.reject(new Error('unhandledRejection test')),
-    //   5000,
+    //   2000,
     // );
     // setTimeout(() => {
     //   throw new Error('uncaughtException test');
-    // }, 5000);
+    // }, 2000);
   }
 }
+
+export const logLevels = ['error', 'warn', 'log', 'verbose', 'debug'].slice(
+  0,
+  +process.env.LOG_LEVEL || 3,
+) as LogLevel[];
+console.log(logLevels);
