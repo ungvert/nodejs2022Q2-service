@@ -9,7 +9,6 @@ export class LoggingMiddleware implements NestMiddleware {
     this.loggingService.log(`Request: ${req.method} ${req.baseUrl}`);
     this.loggingService.debug(`Query params: ${JSON.stringify(req.query)}`);
     this.loggingService.debug(`Request body: ${JSON.stringify(req.body)}`);
-    this.loggingService.verbose(`Response status code: ${res.statusCode}`);
     next();
   }
 }
