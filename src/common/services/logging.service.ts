@@ -1,8 +1,7 @@
 import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { appendFile, mkdir, statSync } from 'fs';
-
-const logDirname = join(dirname(__dirname), 'logs');
+import { logDirname } from '../../main';
 
 @Injectable()
 export class LoggingService extends ConsoleLogger {
@@ -124,5 +123,5 @@ export class LoggingService extends ConsoleLogger {
 
 export const logLevels = ['error', 'warn', 'log', 'verbose', 'debug'].slice(
   0,
-  +process.env.LOG_LEVEL || 3,
+  +process.env.LOG_LEVEL || 5,
 ) as LogLevel[];

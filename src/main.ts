@@ -37,3 +37,5 @@ async function bootstrap() {
 `);
 }
 bootstrap();
+
+export const logDirname = join(dirname(__dirname), 'logs');
