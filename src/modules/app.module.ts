@@ -6,7 +6,7 @@ import { TracksModule } from './tracks/tracks.module';
 import { FavouritesModule } from './favourites/favourites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { CommonModule } from './common/common.module';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [
