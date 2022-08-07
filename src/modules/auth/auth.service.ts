@@ -62,26 +62,32 @@ export class AuthService {
     return this.jwtService.sign(jwtPayload, options);
   }
 
-  async regenerateTokens(refreshTokenDto: RefreshTokenDto): Promise<any> {
-    const isRefreshTokenValid = await this.jwtService.verify(
-      refreshTokenDto.refreshToken,
-      jwtConstants.refreshToken,
-    );
-    if (isRefreshTokenValid) {
-      const oldSignedPayload = this.jwtService.decode(
+  async regenerateTokens(refreshTokenDto: RefreshTokenDto) {
+    let isRefreshTokenValid: any;
+    try {
+      isRefreshTokenValid = await this.jwtService.verify(
         refreshTokenDto.refreshToken,
-      ) as JwtPayload;
-      const newUnsignedPayload = {
-        sub: oldSignedPayload.sub,
-        login: oldSignedPayload.login,
-      };
-      return {
-        accessToken: this.jwtService.sign(
-          newUnsignedPayload,
-          jwtConstants.accessToken,
-        ),
-        refreshToken: await this.getRefreshToken(newUnsignedPayload),
-      };
+        jwtConstants.refreshToken,
+      );
+    } catch (error) {}
+
+    if (!isRefreshTokenValid) {
+      throw new ForbiddenException('Not valid refresh token');
     }
+
+    const oldSignedPayload = this.jwtService.decode(
+      refreshTokenDto.refreshToken,
+    ) as JwtPayload;
+    const newUnsignedPayload = {
+      sub: oldSignedPayload.sub,
+      login: oldSignedPayload.login,
+    };
+    return {
+      accessToken: this.jwtService.sign(
+        newUnsignedPayload,
+        jwtConstants.accessToken,
+      ),
+      refreshToken: await this.getRefreshToken(newUnsignedPayload),
+    };
   }
 }
