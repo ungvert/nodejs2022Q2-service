@@ -46,4 +46,9 @@ export class UsersService {
     const user = await this.findOne(id);
     return this.userRepository.remove(user);
   }
+
+  async findOneByLogin(login: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOneBy({ login });
+    return user;
+  }
 }

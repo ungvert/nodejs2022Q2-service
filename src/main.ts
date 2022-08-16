@@ -25,12 +25,12 @@ async function bootstrap() {
   SwaggerModule.setup('doc', app, document);
 
   await app.listen(port);
+
+  console.log(`
+🚀  Server is running!
+🔉  Listening on port ${port}
+📭  Query at http://localhost:${port}
+📄  OpenApi docs at http://localhost:${port}/doc
+`);
 }
 bootstrap();
-
-console.log(`
-  🚀  Server is running!
-  🔉  Listening on port ${port}
-  📭  Query at http://localhost:${port}
-  📄  OpenApi docs at http://localhost:${port}/doc
-`);
