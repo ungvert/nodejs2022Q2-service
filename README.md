@@ -7,8 +7,8 @@ REST api for home music library service.
 [Assignment, part 2, Containerization, Docker](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/containerization/assignment.md)
 
 [Assignment, part 3, PostgreSQL & ORM](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/database-orm/assignment.md)
-`
-[Assignment, part 4, Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/authentication/assignment.md)`
+
+[Assignment, part 4, Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/authentication/assignment.md)
 
 
 [Assignment, part 5, Logging & Error Handling](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/logging-error-handling/assignment.md)`
