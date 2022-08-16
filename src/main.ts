@@ -4,7 +4,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { readFile } from 'fs/promises';
 import { dirname, join } from 'path';
 import { parse } from 'yaml';
-import { AppModule } from './app.module';
+import { AppModule } from './modules/app.module';
 import 'dotenv/config';
 const port = +process.env.BACKEND_PORT || 4000;
 
